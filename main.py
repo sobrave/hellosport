@@ -74,7 +74,7 @@ def get_access_token(location):
 
 # pushplus消息推送
 def push_plus(title, content):
-    requestUrl = f"http://www.pushplus.plus/send"
+    requesturl = f"http://www.pushplus.plus/send"
     data = {
         "token": PUSH_PLUS_TOKEN,
         "title": title,
@@ -83,7 +83,7 @@ def push_plus(title, content):
         "channel": "wechat"
     }
     try:
-        response = requests.post(requestUrl, data=data)
+        response = requests.post(requesturl, data=data)
         if response.status_code == 200:
             json_res = response.json()
             print(f"pushplus推送完毕：{json_res['code']}-{json_res['msg']}")
@@ -258,7 +258,7 @@ def push_to_push_plus(exec_results, summary):
 def run_single_account(total, idx, user_mi, passwd_mi):
     idx_info = ""
     if idx is not None:
-        idx_info = f"[{idx+1}/{total}]"
+        idx_info = f"[{idx + 1}/{total}]"
     log_str = f"[{format_now()}]\n{idx_info}账号：{desensitize_user_name(user_mi)}"
     try:
         runner = MiMotionRunner(user_mi, passwd_mi)
@@ -285,7 +285,8 @@ def execute():
         if use_concurrent:
             import concurrent.futures
             with concurrent.futures.ThreadPoolExecutor() as executor:
-                exec_results = executor.map(lambda x: run_single_account(total, x[0], *x[1]), enumerate(zip(user_list, passwd_list)))
+                exec_results = executor.map(lambda x: run_single_account(total, x[0], *x[1]),
+                                            enumerate(zip(user_list, passwd_list)))
         else:
             for user_mi, passwd_mi in zip(user_list, passwd_list):
                 exec_results.append(run_single_account(total, idx, user_mi, passwd_mi))
